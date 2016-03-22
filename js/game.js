@@ -150,7 +150,7 @@ var main = function () {
 	oscillator = Math.sin(iterator*2*Math.PI/200)*(b/4) + (b*0.75);//200 is just plucked out of nowhere
 
 	update(delta / 1000);
-	render(now);
+	render();
 
 	then = now;
 
