@@ -11,48 +11,6 @@ canvas.width = b*20;
 canvas.height = b*11;
 document.body.appendChild(canvas);
 
-// Background image
-var drawBackground = function(){
-	ctx.fillStyle="#FFFFFF";
-	ctx.fillRect(0,0,canvas.width,canvas.height);
-};
-
-// electron image
-var drawElectron = function(){
-	ctx.fillStyle="#FF0000";
-	ctx.beginPath();
-	ctx.arc((electron.x + (b/2)),(electron.y + (b/2)),(b/2),0,2*Math.PI);
-	ctx.fill();
-};
-
-// exit image
-var drawExit = function(){
-	ctx.fillStyle="#000000";
-	ctx.fillRect(exit.x,exit.y,b,b);
-};
-//wall images
-var drawWall = function(wall){
-	ctx.fillStyle="#000000";
-	ctx.beginPath();
-	ctx.arc((wall.x + (b/2)),(wall.y + (b/2)),(b/2),0,2*Math.PI);
-	ctx.fill();
-};
-//draw line between hero and nearby walls, using their 'active' property
-var drawActive = function(wall){
-	ctx.beginPath();
-	ctx.strokeStyle="#00ffff";
-	ctx.moveTo((wall.x + (b/2)),(wall.y + (b/2)));
-	ctx.lineTo((electron.x + (b/2)),(electron.y + (b/2)));
-	ctx.stroke(); // Draw it
-};
-//score
-var drawScore = function(){
-	ctx.fillStyle = "#000000";
-	ctx.font = b + "px Helvetica";
-	ctx.textAlign = "left";
-	ctx.textBaseline = "top";
-	ctx.fillText("Level " + (currentLevel + 1), b, b);
-};
 
 // Game objects
 var electron = {
@@ -187,8 +145,12 @@ var main = function () {
 	var now = Date.now();
 	var delta = now - then;
 
+	//pulse oscillator for render()
+	iterator++;
+	oscillator = Math.sin(iterator*2*Math.PI/200)*(b/4) + (b*0.75);//200 is just plucked out of nowhere
+
 	update(delta / 1000);
-	render();
+	render(now);
 
 	then = now;
 
@@ -201,6 +163,8 @@ var w = window;
 requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
 
 // Let's play this game!
-var then = Date.now();
+var then = Date.now(),
+	iterator = 0,
+	oscillator = 0;
 reset();
 main();
