@@ -68,6 +68,11 @@ var drawStartScreen = function(){
 
 	ctx.font = (2*b/3) + "px Audiowide";
 	ctx.fillText("Arrow keys to move... any key to start", 10*b, 7*b);
+
+	ctx.font = (b/4) + "px Audiowide";
+	ctx.textBaseline = "bottom";
+	ctx.textAlign = "left";
+	ctx.fillText("A JavaScript game by cheersphilip, 2016", 1.2*b, 9.8*b);
 };
 //end screen
 var drawEndScreen = function(){
