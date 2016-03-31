@@ -7,10 +7,11 @@ var drawBackground = function(){
 
 // electron image
 var drawElectron = function(){
-	ctx.fillStyle="#FF0000";
-	ctx.beginPath();
-	ctx.arc((electron.x + (b/2)),(electron.y + (b/2)),(oscillator/2),0,2*Math.PI);
-	ctx.fill();
+	var gradient = ctx.createRadialGradient((electron.x + (b/2)),(electron.y + (b/2)),oscillator/2,(electron.x + (b/2)),(electron.y + (b/2)),b/4);
+	gradient.addColorStop(0,"transparent");
+	gradient.addColorStop(1,"red");
+	ctx.fillStyle = gradient;
+	ctx.fillRect(electron.x,electron.y, b, b);
 };
 
 // exit image
@@ -22,19 +23,32 @@ var drawExit = function(){
 var drawWall = function(wall){
 	ctx.fillStyle="#FFFFFF";
 	ctx.beginPath();
-	ctx.arc((wall.x + (b/2)),(wall.y + (b/2)),(oscillator/2),0,2*Math.PI);
+	ctx.arc((wall.x + (b/2)),(wall.y + (b/2)),b/2-1,0,2*Math.PI);
 	ctx.fill();
+	//tried with gradient for walls, but too much of a performance hit. try sprites
+	// var gradient = ctx.createRadialGradient((wall.x + (b/2)),(wall.y + (b/2)),b/2,(wall.x + (b/2)),(wall.y + (b/2)),b/4);
+	// gradient.addColorStop(0,"transparent");
+	// gradient.addColorStop(1,"white");
+	// ctx.fillStyle = gradient;
+	// ctx.fillRect(wall.x,wall.y, b, b)
 };
 //draw line between hero and nearby walls, using their 'active' property
 var drawActive = function(wall){
 	var lineWidth = wall.strength*b;
-	if (lineWidth > b/2 ) {lineWidth = b/2;};
+	if (lineWidth > b/4 ) {lineWidth = b/4;};
 	ctx.beginPath();
     ctx.lineWidth = lineWidth;
+	ctx.lineCap = "round";
 	ctx.strokeStyle="#00ffff";
 	ctx.moveTo((wall.x + (b/2)),(wall.y + (b/2)));
 	ctx.lineTo((electron.x + (b/2)),(electron.y + (b/2)));
 	ctx.stroke(); // Draw it
+
+	var gradient = ctx.createRadialGradient((wall.x + (b/2)),(wall.y + (b/2)),(oscillator/2)+lineWidth,(wall.x + (b/2)),(wall.y + (b/2)),lineWidth);
+	gradient.addColorStop(0,"transparent");
+	gradient.addColorStop(1,"cyan");
+	ctx.fillStyle = gradient;
+	ctx.fillRect(wall.x,wall.y, b, b)
 };
 //score
 var drawScore = function(){
@@ -50,14 +64,12 @@ var drawStartScreen = function(){
 	ctx.textAlign = "center";
 	ctx.textBaseline = "top";
 	ctx.font = (2*b) + "px Audiowide";
-	//ctx.font = (2*b) + "px 'Share Tech Mono'";
 	ctx.fillText("Free Electron", 10*b, 1.4*b);
-
-	ctx.font = (9*b/10) + "px Audiowide";
-	//ctx.fillText('"Avoid all that is negative!"', 10*b, 3.2*b);
 
 	ctx.beginPath();
 	ctx.strokeStyle="#00ffff";
+	ctx.lineJoin = "round";
+	ctx.lineCap = "round";
     ctx.lineWidth = 8;
 	ctx.moveTo(6*b,5.5*b);
 	ctx.lineTo(14*b,5.5*b);
@@ -73,6 +85,12 @@ var drawStartScreen = function(){
 	ctx.textBaseline = "bottom";
 	ctx.textAlign = "left";
 	ctx.fillText("A JavaScript game by cheersphilip, 2016", 1.2*b, 9.8*b);
+
+	//cover up that annoying black dot over the electron
+	ctx.fillStyle="#FF0000";
+	ctx.beginPath();
+	ctx.arc((electron.x + (b/2)),(electron.y + (b/2)),b/8,0,2*Math.PI);
+	ctx.fill();
 };
 //end screen
 var drawEndScreen = function(){
@@ -80,14 +98,9 @@ var drawEndScreen = function(){
 	ctx.textAlign = "center";
 	ctx.textBaseline = "top";
 	ctx.font = (2*b) + "px Audiowide";
-	//ctx.font = (2*b) + "px 'Share Tech Mono'";
 	ctx.fillText("Free Electron", 10*b, 1.4*b);
 
-	ctx.font = (9*b/10) + "px Audiowide";
-	//ctx.fillText('"Avoid all that is negative"', 10*b, 3.2*b);
-
 	ctx.font = (2*b/3) + "px Audiowide";
-	//ctx.fillText("Yay, you finished the game!", 10*b, 7*b);
 	ctx.fillText("Yay! Well done... space bar to play again", 10*b, 7*b);
 
 	ctx.font = (b/2) + "px Audiowide";

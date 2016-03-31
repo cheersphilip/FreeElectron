@@ -108,7 +108,7 @@ var update = function (modifier) {
 				if (Math.abs(yd) > 1) {
 					vector.y += yd*strength*modifier*attraction;
 				};
-				//if walls are closer than a certain distance, set their 'active' proprty to true
+				//if walls are closer than a certain distance, set their 'active' property to true
 				if (distanceSqr < (0.2*(electron.speed*electron.speed))) {
 					activeWalls.push({x:walls[i].x, y:walls[i].y, strength:strength});
 				};
@@ -137,6 +137,7 @@ var update = function (modifier) {
 			++currentLevel;
 			if (currentLevel == levels.length) {currentLevel = 0};//until start and end screens are sorted!
 			reset();
+			//TODO: implement scene change graphic
 		};
 	};
 };
@@ -159,10 +160,10 @@ var render = function () {
 	} else {
 		drawBackground();
 		drawScore();
-		drawElectron();
 		for (var i = 0; i < walls.length; i++) {
 			drawWall(walls[i]);
 		};
+		drawElectron();
 		for (var i = 0; i < activeWalls.length; i++) {
 			drawActive(activeWalls[i]);
 		};
@@ -177,8 +178,8 @@ var main = function () {
 
 	//pulse oscillator for render()
 	iterator++;
-	oscillator = Math.sin(iterator*2*Math.PI/200)*(b/4) + (b*0.75);//200 is just plucked out of nowhere
-
+	oscillator = Math.sin(iterator*2*Math.PI/delta)*(b/8) + (7*b/8);//oscillator will be between b*0.75 and b
+	//delta is used as the update period here, but any number between 20 (fast) and 200 (slow) will do
 	update(delta / 1000);
 	render();
 
