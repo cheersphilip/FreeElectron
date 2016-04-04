@@ -10,7 +10,8 @@ canvas.height = b*11;
 var marginTop = ((window.innerHeight-(b*11))/2).toString();
 canvas.setAttribute("style","margin-top:" + marginTop + "px");
 document.body.appendChild(canvas);
-
+//TODO: modify canvas size so that score & health can be outside the game area
+//TODO: loading screen until fonts etc. are loaded
 
 // Game objects
 var electron = {
@@ -24,6 +25,11 @@ var activeWalls = [];
 //TODO: put in logic so that there is a start and end screen/level
 var currentLevel = 0;
 
+//death mechanic
+var deathStartTime = 0;
+var deathElapsedTime = 0;
+var deathDuration = 500;
+
 // Handle keyboard controls
 var keysDown = {};
 
@@ -35,7 +41,7 @@ addEventListener("keyup", function (e) {
 	delete keysDown[e.keyCode];
 }, false);
 
-// Reset the game when the player catches a monster
+// Reset the game when the player reaches the exit
 var reset = function () {
 
 	//construct the level
@@ -66,7 +72,7 @@ var update = function (modifier) {
 				reset();
 		    };
 		};
-	} else {
+	} else if (electron.health > 0){
 		if (38 in keysDown) { // Player holding up
 			electron.y -= electron.speed * modifier;
 		}
@@ -115,17 +121,28 @@ var update = function (modifier) {
 			} else {
 				walls[i].active = false;
 			};
-
-			// if (13 in keysDown) { 
-			// 	debugger;
-			// }
 		};
-		//console.log(vector)
 		electron.x += vector.x;
 		electron.y += vector.y;
 
 		//TODO: Detect collision with the walls
-		//TODO: implement health feature i.e if activeWalls.length ? health++ : health--
+
+		//adjust electron.health
+		if (activeWalls.length) {
+			for (var i = 0; i < activeWalls.length; i++) {
+				electron.health -= (activeWalls[i].strength * modifier*50);//50 is abitrary
+				if (electron.health < 0) {
+					electron.health = 0;
+					deathStartTime = Date.now();
+					deathElapsedTime = 0;
+				};
+			};
+		} else {
+			electron.health += modifier;
+			if (electron.health > 100) {
+				electron.health = 100;
+			};
+		};
 
 		// Is it touching the exit?
 		if (
@@ -139,12 +156,20 @@ var update = function (modifier) {
 			reset();
 			//TODO: implement scene change graphic
 		};
+	} else { 
+		deathElapsedTime += modifier*1000;
+		if (deathElapsedTime > deathDuration) {
+			currentLevel--;
+			deathStartTime = 0;
+			deathElapsedTime = 0;
+			electron.health = 100;
+			reset();
+		};
 	};
 };
 
 // Draw everything
 var render = function () {
-
 	if (currentLevel === 0) {
 		drawBackground();
 		drawStartScreen();
@@ -160,6 +185,7 @@ var render = function () {
 	} else {
 		drawBackground();
 		drawScore();
+		drawHealth();
 		for (var i = 0; i < walls.length; i++) {
 			drawWall(walls[i]);
 		};
@@ -168,6 +194,9 @@ var render = function () {
 			drawActive(activeWalls[i]);
 		};
 		drawExit();
+		if (electron.health == 0){
+			drawDeathScene();
+		}
 	};
 };
 

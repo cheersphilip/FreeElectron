@@ -1,4 +1,8 @@
 
+function shadeColor2(color, percent) {   //http://stackoverflow.com/a/13542669
+    var f=parseInt(color.slice(1),16),t=percent<0?0:255,p=percent<0?percent*-1:percent,R=f>>16,G=f>>8&0x00FF,B=f&0x0000FF;
+    return "#"+(0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B)).toString(16).slice(1);
+}
 // Background image
 var drawBackground = function(){
 	ctx.fillStyle="#000000";
@@ -48,7 +52,7 @@ var drawActive = function(wall){
 	gradient.addColorStop(0,"transparent");
 	gradient.addColorStop(1,"cyan");
 	ctx.fillStyle = gradient;
-	ctx.fillRect(wall.x,wall.y, b, b)
+	ctx.fillRect(wall.x,wall.y, b, b);
 };
 //score
 var drawScore = function(){
@@ -57,6 +61,33 @@ var drawScore = function(){
 	ctx.textAlign = "left";
 	ctx.textBaseline = "top";
 	ctx.fillText("Level " + currentLevel, b, b);
+};
+//health
+var drawHealth = function(){
+	ctx.fillStyle = "#FFFFFF";
+	ctx.font = b + "px Audiowide";
+	ctx.textAlign = "right";
+	ctx.textBaseline = "top";
+	ctx.fillText("Health ", 10.1*b, b);
+
+    ctx.lineWidth = 1;
+	ctx.strokeStyle="#ffffff";
+	ctx.strokeRect(10*b,1.1*b,8.9*b,0.7*b);
+	ctx.fillStyle = shadeColor2("#00ffff",electron.health/100);
+	ctx.fillRect((10*b)+2,(1.1*b)+2,(((8.9*b)-4)*(electron.health/100)),(0.7*b)-4);
+};
+var drawDeathScene = function(){
+	ctx.fillStyle = "red";
+	var radius = (deathElapsedTime / deathDuration)*100*20;//the screen is 20*b wide
+	ctx.beginPath();
+	ctx.arc((electron.x + (b/2)),(electron.y + (b/2)),radius,0,2*Math.PI);
+	ctx.fill();
+	if (radius > (2*b)) {
+		ctx.fillStyle = "black";
+		ctx.beginPath();
+		ctx.arc((electron.x + (b/2)),(electron.y + (b/2)),radius-(2*b),0,2*Math.PI);
+		ctx.fill();
+	};
 };
 //start screen
 var drawStartScreen = function(){
