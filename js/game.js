@@ -3,13 +3,14 @@ var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
 
 var blockWidth = Math.floor(window.innerWidth/20);
-var blockHeight = Math.floor(window.innerHeight/11);
+var blockHeight = Math.floor(window.innerHeight/12);
 var b = blockHeight > blockWidth ? blockWidth: blockHeight;
 canvas.width = b*20;
-canvas.height = b*11;
-var marginTop = ((window.innerHeight-(b*11))/2).toString();
-canvas.setAttribute("style","margin-top:" + marginTop + "px");
+canvas.height = b*12;
+// var marginTop = ((window.innerHeight-(b*11))/2).toString();
+// canvas.setAttribute("style","margin-top:" + marginTop + "px");
 document.body.appendChild(canvas);
+
 //TODO: modify canvas size so that score & health can be outside the game area
 //TODO: loading screen until fonts etc. are loaded
 
@@ -22,10 +23,8 @@ var exit = {};
 var walls = [];
 var activeWalls = [];
 
-//TODO: put in logic so that there is a start and end screen/level
+//levels
 var currentLevel = 0;
-
-//death mechanic
 var deathStartTime = 0;
 var deathElapsedTime = 0;
 var deathDuration = 500;
@@ -203,12 +202,13 @@ var render = function () {
 // The main game loop
 var main = function () {
 	var now = Date.now();
-	var delta = now - then;
+	var delta = now - then || 1;
 
 	//pulse oscillator for render()
 	iterator++;
 	oscillator = Math.sin(iterator*2*Math.PI/delta)*(b/8) + (7*b/8);//oscillator will be between b*0.75 and b
 	//delta is used as the update period here, but any number between 20 (fast) and 200 (slow) will do
+
 	update(delta / 1000);
 	render();
 
@@ -224,7 +224,7 @@ requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame
 
 // Let's play this game!
 var then = Date.now(),
-	iterator = 0,
-	oscillator = 0;
+	iterator = 1,
+	oscillator = 1;
 reset();
 main();

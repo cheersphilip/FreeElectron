@@ -11,7 +11,7 @@ var drawBackground = function(){
 
 // electron image
 var drawElectron = function(){
-	var gradient = ctx.createRadialGradient((electron.x + (b/2)),(electron.y + (b/2)),oscillator/2,(electron.x + (b/2)),(electron.y + (b/2)),b/4);
+	var gradient = ctx.createRadialGradient((electron.x + (b/2)),(electron.y + (b/2)),oscillator/2,(electron.x + (b/2)),(electron.y + (b/2)),0);
 	gradient.addColorStop(0,"transparent");
 	gradient.addColorStop(1,"red");
 	ctx.fillStyle = gradient;
