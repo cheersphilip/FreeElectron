@@ -11,7 +11,6 @@ canvas.height = b*12;
 // canvas.setAttribute("style","margin-top:" + marginTop + "px");
 document.body.appendChild(canvas);
 
-//TODO: don't let the electron move outside the canvas
 //TODO: loading screen until fonts etc. are loaded
 
 // Game objects
@@ -92,8 +91,7 @@ var update = function (modifier) {
 			}
 		}
 
-		//iterate through an array of walls, creating a single vector that
-		//modifies electron.x and electron.y
+		//iterate through an array of walls, creating a single vector that modifies electron.x and electron.y
 		var vector = {x:0,y:0};
 		activeWalls = [];
 		for (var i = walls.length - 1; i >= 0; i--) {
@@ -121,10 +119,19 @@ var update = function (modifier) {
 				walls[i].active = false;
 			};
 		};
-		electron.x += vector.x;
-		electron.y += vector.y;
 
-		//TODO: Detect collision with the walls
+		//set electron position, limit to game area
+		electron.x += vector.x;
+		if (electron.x < 0)
+			electron.x = 0;
+		if (electron.x > canvas.width-b)
+			electron.x = canvas.width-b;
+
+		electron.y += vector.y;
+		if (electron.y < b)
+			electron.y = b;
+		if (electron.y > canvas.height-b)
+			electron.y = canvas.height-b;
 
 		//adjust electron.health
 		if (activeWalls.length) {
@@ -153,7 +160,7 @@ var update = function (modifier) {
 			++currentLevel;
 			if (currentLevel == levels.length) {currentLevel = 0};//until start and end screens are sorted!
 			reset();
-			//TODO: implement scene change graphic
+			//TODO: implement scene change graphic - fade out/in, flash on level number, etc.
 		};
 	} else { 
 		deathElapsedTime += modifier*1000;
