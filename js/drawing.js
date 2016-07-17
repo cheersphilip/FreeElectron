@@ -57,26 +57,26 @@ var drawActive = function(wall){
 //score
 var drawScore = function(){
 	ctx.fillStyle = "#FFFFFF";
-	ctx.font = b + "px Audiowide";
+	ctx.font = b*0.8 + "px Audiowide";
 	ctx.textAlign = "left";
-	ctx.textBaseline = "top";
-	ctx.fillText("Level " + currentLevel, b, b);
+	ctx.textBaseline = "middle";
+	ctx.fillText(" Level " + currentLevel, 0, b*0.6);
 };
 //health
 var drawHealth = function(){
 	ctx.fillStyle = "#FFFFFF";
-	ctx.font = b + "px Audiowide";
+	ctx.font = b*0.8 + "px Audiowide";
 	ctx.textAlign = "right";
-	ctx.textBaseline = "top";
-	ctx.fillText("Health ", 10.1*b, b);
+	ctx.textBaseline = "middle";
+	ctx.fillText("Health ", 11.1*b, b*0.6);
 
     ctx.lineWidth = 1;
 	ctx.strokeStyle="#ffffff";
-	ctx.strokeRect(10*b,1.1*b,8.9*b,0.7*b);
+	ctx.strokeRect(11*b,0.2*b,8.6*b,0.7*b);
 	ctx.fillStyle = shadeColor2("#00ffff",electron.health/100);
-	ctx.fillRect((10*b)+2,(1.1*b)+2,(((8.9*b)-4)*(electron.health/100)),(0.7*b)-4);
+	ctx.fillRect((11*b)+2,(0.2*b)+2,(((8.6*b)-4)*(electron.health/100)),(0.7*b)-4);
 };
-var drawDeathScene = function(){
+var drawDeathScene = function(){	
 	ctx.fillStyle = "red";
 	var radius = (deathElapsedTime / deathDuration)*100*20;//the screen is 20*b wide
 	ctx.beginPath();
@@ -95,27 +95,28 @@ var drawStartScreen = function(){
 	ctx.textAlign = "center";
 	ctx.textBaseline = "top";
 	ctx.font = (2*b) + "px Audiowide";
-	ctx.fillText("Free Electron", 10*b, 1.4*b);
+	ctx.fillText("Free Electron", 10*b, 2.4*b);
 
+	//draw the arrow
 	ctx.beginPath();
 	ctx.strokeStyle="#00ffff";
 	ctx.lineJoin = "round";
 	ctx.lineCap = "round";
     ctx.lineWidth = 8;
-	ctx.moveTo(6*b,5.5*b);
-	ctx.lineTo(14*b,5.5*b);
-	ctx.moveTo(13*b,4.5*b);
-	ctx.lineTo(14*b,5.5*b);
-	ctx.lineTo(13*b,6.5*b);
+	ctx.moveTo(6*b,6.5*b);
+	ctx.lineTo(14*b,6.5*b);
+	ctx.moveTo(13*b,5.5*b);
+	ctx.lineTo(14*b,6.5*b);
+	ctx.lineTo(13*b,7.5*b);
 	ctx.stroke(); // Draw it
 
 	ctx.font = (2*b/3) + "px Audiowide";
-	ctx.fillText("Arrow keys to move... any key to start", 10*b, 7*b);
+	ctx.fillText("Arrow keys to move... any key to start", 10*b, 8*b);
 
 	ctx.font = (b/4) + "px Audiowide";
 	ctx.textBaseline = "bottom";
 	ctx.textAlign = "left";
-	ctx.fillText("A JavaScript game by cheersphilip, 2016", 1.2*b, 9.8*b);
+	ctx.fillText("A JavaScript game by cheersphilip, 2016", 1.2*b, 10.8*b);
 
 	//cover up that annoying black dot over the electron
 	ctx.fillStyle="#FF0000";
@@ -129,12 +130,12 @@ var drawEndScreen = function(){
 	ctx.textAlign = "center";
 	ctx.textBaseline = "top";
 	ctx.font = (2*b) + "px Audiowide";
-	ctx.fillText("Free Electron", 10*b, 1.4*b);
+	ctx.fillText("Free Electron", 10*b, 2.4*b);
 
 	ctx.font = (2*b/3) + "px Audiowide";
-	ctx.fillText("Yay! Well done... space bar to play again", 10*b, 7*b);
+	ctx.fillText("Yay! Well done... space bar to play again", 10*b, 8*b);
 
 	ctx.font = (b/2) + "px Audiowide";
-	ctx.fillText("A game by cheersphilip", 10*b, 9	*b);
-	ctx.fillText("Thanks for playing ;)", 10*b, 9.8*b);
+	ctx.fillText("A game by cheersphilip", 10*b, 10*b);
+	ctx.fillText("Thanks for playing ;)", 10*b, 10.8*b);
 };

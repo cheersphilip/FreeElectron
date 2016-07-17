@@ -11,7 +11,7 @@ canvas.height = b*12;
 // canvas.setAttribute("style","margin-top:" + marginTop + "px");
 document.body.appendChild(canvas);
 
-//TODO: modify canvas size so that score & health can be outside the game area
+//TODO: don't let the electron move outside the canvas
 //TODO: loading screen until fonts etc. are loaded
 
 // Game objects
@@ -48,15 +48,15 @@ var reset = function () {
 	for (var i = 0; i < 11; i++) {
 		for (var j = 0; j < 20; j++) {
 			if (levels[currentLevel][i][j] == 0) {
-				walls.push({x:j*b,y:i*b});
+				walls.push({x:j*b,y:(i+1)*b});
 			};
 			if (levels[currentLevel][i][j] == 1) {
 				electron.x = j*b;
-				electron.y = i*b;
+				electron.y = (i+1)*b;
 			};
 			if (levels[currentLevel][i][j] == 2) {
 				exit.x = j*b;
-				exit.y = i*b;
+				exit.y = (i+1)*b;
 			};
 		};
 	};
