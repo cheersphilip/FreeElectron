@@ -7,11 +7,7 @@ var blockHeight = Math.floor(window.innerHeight/12);
 var b = blockHeight > blockWidth ? blockWidth: blockHeight;
 canvas.width = b*20;
 canvas.height = b*12;
-// var marginTop = ((window.innerHeight-(b*11))/2).toString();
-// canvas.setAttribute("style","margin-top:" + marginTop + "px");
 document.body.appendChild(canvas);
-
-//TODO: loading screen until fonts etc. are loaded
 
 // Game objects
 var electron = {
@@ -176,33 +172,36 @@ var update = function (modifier) {
 
 // Draw everything
 var render = function () {
-	if (currentLevel === 0) {
-		drawBackground();
-		drawStartScreen();
-		drawElectron();
-		for (var i = 0; i < walls.length; i++) {
-			drawWall(walls[i]);
+	//TODO: loading screen until fonts etc. are loaded
+	if (fontsLoaded) {
+		if (currentLevel === 0) {
+			drawBackground();
+			drawStartScreen();
+			drawElectron();
+			for (var i = 0; i < walls.length; i++) {
+				drawWall(walls[i]);
+			};
+			drawExit();
+		} else if (currentLevel === levels.length-1) {
+			drawBackground();
+			drawEndScreen();
+			drawElectron();
+		} else {
+			drawBackground();
+			drawScore();
+			drawHealth();
+			for (var i = 0; i < walls.length; i++) {
+				drawWall(walls[i]);
+			};
+			drawElectron();
+			for (var i = 0; i < activeWalls.length; i++) {
+				drawActive(activeWalls[i]);
+			};
+			drawExit();
+			if (electron.health == 0){
+				drawDeathScene();
+			};
 		};
-		drawExit();
-	} else if (currentLevel === levels.length-1) {
-		drawBackground();
-		drawEndScreen();
-		drawElectron();
-	} else {
-		drawBackground();
-		drawScore();
-		drawHealth();
-		for (var i = 0; i < walls.length; i++) {
-			drawWall(walls[i]);
-		};
-		drawElectron();
-		for (var i = 0; i < activeWalls.length; i++) {
-			drawActive(activeWalls[i]);
-		};
-		drawExit();
-		if (electron.health == 0){
-			drawDeathScene();
-		}
 	};
 };
 

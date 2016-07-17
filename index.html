@@ -3,11 +3,40 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Simple Canvas Game</title>
+    <style type="text/css">
+      body{
+        margin:0;
+        background:black;
+        width:100%;
+        height: 100%;
+        font-family: arial, sans-serif;
+        position: relative;
+      }
+      div#loading{
+        margin: 0 auto;
+        color: white;
+        text-align: center;
+        height:5vh;
+        position: absolute;
+        top:45vh;
+        left:45vw;
+        font-size:2em;
+      }
+    </style>
 	</head>
-	<body style="margin:0;background:black;">
+	<body>
+    <div id="loading">
+      Loading...
+    </div>
     <script type="text/javascript">
+    var fontsLoaded = false;
     WebFontConfig = {
-      google: { families: [ 'Audiowide::latin', 'Monofett::latin' ] }
+      classes: false,
+      active: function() {
+        fontsLoaded = true;
+        document.getElementsByTagName('body')[0].removeChild( document.getElementById( 'loading' ) );
+      },
+      google: { families: [ 'Audiowide::latin'] }
     };
     (function() {
       var wf = document.createElement('script');
@@ -16,7 +45,8 @@
       wf.async = 'true';
       var s = document.getElementsByTagName('script')[0];
       s.parentNode.insertBefore(wf, s);
-    })(); </script>
+    })(); 
+    </script>
 		<script src="js/levels.js"></script>
 		<script src="js/drawing.js"></script>
 		<script src="js/game.js"></script>
