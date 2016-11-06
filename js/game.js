@@ -67,7 +67,8 @@ var update = function (modifier) {
 		    };
 		};
 	} else if (electron.health > 0){
-		if(27 in keydown){ // Player holding Escape
+		if(27 in keysDown){ // Player holding Escape
+			//TODO: quite blunt - needs work
 			window.location.reload();
 		}
 		if (38 in keysDown) { // Player holding up
@@ -151,10 +152,10 @@ var update = function (modifier) {
 
 		// Is it touching the exit?
 		if (
-			electron.x <= (exit.x + b)
-			&& exit.x <= (electron.x + b)
-			&& electron.y <= (exit.y + b)
-			&& exit.y <= (electron.y + b)
+			electron.x + b/2 >= exit.x + b/5
+			&& electron.x + b/2 <= exit.x + 4 * b/5
+			&& electron.y + b/2 >= exit.y
+			&& electron.y + b/2 <= exit.y + b
 		) {
 			++currentLevel;
 			if (currentLevel == levels.length) {currentLevel = 0};//until start and end screens are sorted!
@@ -177,7 +178,7 @@ var update = function (modifier) {
 var render = function () {
 	//TODO: loading screen until fonts etc. are loaded
 	if (fontsLoaded) {
-		if (currentLevel === 0) {
+		if (currentLevel === 0) { // start screen
 			drawBackground();
 			drawStartScreen();
 			drawElectron();
@@ -185,7 +186,8 @@ var render = function () {
 				drawWall(walls[i]);
 			};
 			drawExit();
-		} else if (currentLevel === levels.length-1) {
+		} else if (currentLevel === levels.length-1) { // end screen
+			electron.health = 100;
 			drawBackground();
 			drawEndScreen();
 			drawElectron();
