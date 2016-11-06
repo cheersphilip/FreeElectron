@@ -67,6 +67,9 @@ var update = function (modifier) {
 		    };
 		};
 	} else if (electron.health > 0){
+		if(27 in keydown){ // Player holding Escape
+			window.location.reload();
+		}
 		if (38 in keysDown) { // Player holding up
 			electron.y -= electron.speed * modifier;
 		}

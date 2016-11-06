@@ -68,7 +68,7 @@ var drawHealth = function(){
 	ctx.font = b*0.8 + "px Audiowide";
 	ctx.textAlign = "right";
 	ctx.textBaseline = "middle";
-	ctx.fillText("Health ", 11.1*b, b*0.6);
+	ctx.fillText("Energy ", 11.1*b, b*0.6);
 
     ctx.lineWidth = 1;
 	ctx.strokeStyle="#ffffff";
