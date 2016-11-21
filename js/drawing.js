@@ -20,8 +20,20 @@ var drawElectron = function(){
 
 // exit image
 var drawExit = function(){
-	ctx.fillStyle="#FFFFFF";
-	ctx.fillRect(exit.x+(b/5),exit.y,(4*b/5),b);
+	var ex = exit.x + b/2,
+		ey = exit.y + b/2;
+	ctx.strokeStyle="#00ffff";
+	if (exitIsActive){
+		ctx.setLineDash([10, 20]);
+		ctx.lineWidth = 10;
+	} else {
+		ctx.setLineDash([10, 5]);
+    	ctx.lineWidth = 2;
+	};
+	ctx.beginPath();
+	ctx.arc(ex,ey,b/2-1,0,2*Math.PI);
+	ctx.stroke();
+	ctx.setLineDash([]);
 };
 //wall images
 var drawWall = function(wall){
@@ -29,12 +41,6 @@ var drawWall = function(wall){
 	ctx.beginPath();
 	ctx.arc((wall.x + (b/2)),(wall.y + (b/2)),b/2-1,0,2*Math.PI);
 	ctx.fill();
-	//tried with gradient for walls, but too much of a performance hit. try sprites
-	// var gradient = ctx.createRadialGradient((wall.x + (b/2)),(wall.y + (b/2)),b/2,(wall.x + (b/2)),(wall.y + (b/2)),b/4);
-	// gradient.addColorStop(0,"transparent");
-	// gradient.addColorStop(1,"white");
-	// ctx.fillStyle = gradient;
-	// ctx.fillRect(wall.x,wall.y, b, b)
 };
 //draw line between hero and nearby walls, using their 'active' property
 var drawActive = function(wall){

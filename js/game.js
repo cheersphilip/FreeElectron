@@ -1,10 +1,9 @@
 // Create the canvas
-var canvas = document.createElement("canvas");
-var ctx = canvas.getContext("2d");
-
-var blockWidth = Math.floor(window.innerWidth/20);
-var blockHeight = Math.floor(window.innerHeight/12);
-var b = blockHeight > blockWidth ? blockWidth: blockHeight;
+var canvas = document.createElement("canvas"),
+	ctx = canvas.getContext("2d"),
+	blockWidth = Math.floor(window.innerWidth/20),
+	blockHeight = Math.floor(window.innerHeight/12),
+	b = blockHeight > blockWidth ? blockWidth: blockHeight;
 canvas.width = b*20;
 canvas.height = b*12;
 document.body.appendChild(canvas);
@@ -14,15 +13,16 @@ var electron = {
 	speed: b*8, // movement in pixels per second
 	health: 100
 };
-var exit = {};
-var walls = [];
-var activeWalls = [];
+var exit = {},
+	exitIsActive = false,
+	walls = [],
+	activeWalls = [];
 
 //levels
-var currentLevel = 0;
-var deathStartTime = 0;
-var deathElapsedTime = 0;
-var deathDuration = 500;
+var currentLevel = 0,
+	deathStartTime = 0,
+	deathElapsedTime = 0
+	deathDuration = 500;
 
 // Handle keyboard controls
 var keysDown = {};
@@ -151,12 +151,16 @@ var update = function (modifier) {
 		};
 
 		// Is it touching the exit?
-		if (
-			electron.x + b/2 >= exit.x + b/5
-			&& electron.x + b/2 <= exit.x + 4 * b/5
-			&& electron.y + b/2 >= exit.y
-			&& electron.y + b/2 <= exit.y + b
-		) {
+		var dx, dy, exitDistSqr;
+		dx = exit.x - electron.x;
+		dy = exit.y - electron.y;
+		exitDistSqr = (dx*dx) + (dy*dy);
+		if (exitDistSqr < ((b/2)*(b/2)))
+			exitIsActive = true;
+		else
+			exitIsActive = false;
+		if (exitDistSqr < ((b/3)*(b/3))){
+			exitIsActive = false;
 			++currentLevel;
 			if (currentLevel == levels.length) {currentLevel = 0};//until start and end screens are sorted!
 			reset();
