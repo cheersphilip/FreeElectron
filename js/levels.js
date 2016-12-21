@@ -281,7 +281,7 @@
 		};
 
 		return {
-			level: levels
+			levels: levels
 		};
 	
 	}();
