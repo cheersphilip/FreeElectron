@@ -12,33 +12,39 @@
 		document.body.appendChild(canvas);
 
 		// Game objects
-		var electron = {
-			speed: b*8, // movement in pixels per second
-			health: 100
+		var data = {
+			electron:{
+				speed: b*8, // movement in pixels per second
+				health: 100
+			},
+			exit: {},
+			walls: [],
+			activeWalls: [],
+			exitIsActive: false,
+			ctx: ctx,
+			b: b,
+			currentLevel:0,
+			deathStartTime: 0,
+			deathElapsedTime: 0,
+			deathDuration: 500
 		};
-		var exit = {},
-			exitIsActive = false,
-			walls = [],
-			activeWalls = [];
+		
+		 //TODO: you got as far as here!
 
-		//drawing reference
-		var drawActive = window.freeElectron.draw.drawActive,
-			drawBackground = window.freeElectron.draw.drawBackground,
-			drawDeathScene = window.freeElectron.draw.drawDeathScene,
-			drawElectron = window.freeElectron.draw.drawElectron,
-			drawEndScreen = window.freeElectron.draw.drawEndScreen,
-			drawExit = window.freeElectron.draw.drawExit,
-			drawHealth = window.freeElectron.draw.drawHealth,
-			drawScore = window.freeElectron.draw.drawScore,
-			drawStartScreen = window.freeElectron.draw.drawStartScreen,
-			drawWall = window.freeElectron.draw.drawWall;
+		// //drawing reference
+		// var drawActive = window.freeElectron.draw.drawActive,
+		// 	drawBackground = window.freeElectron.draw.drawBackground,
+		// 	drawDeathScene = window.freeElectron.draw.drawDeathScene,
+		// 	drawElectron = window.freeElectron.draw.drawElectron,
+		// 	drawEndScreen = window.freeElectron.draw.drawEndScreen,
+		// 	drawExit = window.freeElectron.draw.drawExit,
+		// 	drawHealth = window.freeElectron.draw.drawHealth,
+		// 	drawScore = window.freeElectron.draw.drawScore,
+		// 	drawStartScreen = window.freeElectron.draw.drawStartScreen,
+		// 	drawWall = window.freeElectron.draw.drawWall;
 
 		//levels
 		var levels = window.freeElectron.map.levels,
-			currentLevel = 0,
-			deathStartTime = 0,
-			deathElapsedTime = 0
-			deathDuration = 500;
 
 		// Handle keyboard controls
 		var keysDown = {};
