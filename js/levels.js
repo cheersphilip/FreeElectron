@@ -275,16 +275,12 @@
 				[ , , , , , , , , , , , , , , , , , , , ]
 			]
 		);
-	
-		window.onload = function(){
-
-		};
 
 		return {
 			levels: levels
 		};
 	
-	}();
+	})();
 })(window.freeElectron = window.freeElectron || {});
 
 

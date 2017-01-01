@@ -1,7 +1,5 @@
 ;(function(namespace, undefined){
 	namespace.draw = (function () {
-		var ctx = window.freeElectron.main.context,
-		canvas = window.freeElectron.main.canvas;
 
 		function shadeColor2(color, percent) {   //http://stackoverflow.com/a/13542669
 		    var f=parseInt(color.slice(1),16),t=percent<0?0:255,p=percent<0?percent*-1:percent,R=f>>16,G=f>>8&0x00FF,B=f&0x0000FF;
@@ -78,7 +76,7 @@
 			d.ctx.fillText(" Level " + d.currentLevel, 0, b*0.6);
 		};
 		//health
-		function drawHealth(){
+		function drawHealth(d){
 			var b = d.b;
 			d.ctx.fillStyle = "#FFFFFF";
 			d.ctx.font = b*0.8 + "px Audiowide";
@@ -94,7 +92,7 @@
 		};
 		function drawDeathScene(d){	
 			var b = d.b,
-				radius = (deathElapsedTime / deathDuration)*100*20;//the screen is 20*b wide
+				radius = (d.deathElapsedTime / d.deathDuration)*100*20;//the screen is 20*b wide
 			d.ctx.fillStyle = "red";
 			d.ctx.beginPath();
 			d.ctx.arc((d.electron.x + (b/2)),(d.electron.y + (b/2)),radius,0,2*Math.PI);
@@ -159,10 +157,6 @@
 			d.ctx.fillText("Thanks for playing ;)", 10*b, 10.8*b);
 		};
 
-		window.onload = function(){
-
-		};
-
 		return {
 			StartScreen: drawStartScreen,
 			DeathScene: drawDeathScene,
@@ -176,5 +170,5 @@
 			Background: drawBackground
 		};
 
-	}();
+	})();
 })(window.freeElectron = window.freeElectron || {});

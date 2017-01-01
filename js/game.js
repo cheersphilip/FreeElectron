@@ -2,7 +2,7 @@
 	namespace.main = (function () {
 		// Create the canvas
 		var canvas = document.createElement("canvas"),
-			ctx = freeElectron.canvas.getContext("2d"),
+			ctx = canvas.getContext("2d"),
 			blockWidth = Math.floor(window.innerWidth/20),
 			blockHeight = Math.floor(window.innerHeight/12),
 			b = blockHeight > blockWidth ? blockWidth: blockHeight;
@@ -28,14 +28,11 @@
 			deathStartTime: 0,
 			deathElapsedTime: 0,
 			deathDuration: 500, 
-			then,
-			iterator,
-			oscillator
+			then:0,
+			iterator:0,
+			oscillator:0
 		};
 		
-		//references from other files
-		var levels = window.freeElectron.map.levels;
-
 		// Handle keyboard controls
 		var keysDown = {};
 
@@ -49,19 +46,20 @@
 
 		// Reset the game when the player reaches the exit
 		function reset() {
-
+			var levels = window.freeElectron.map.levels;
+			
 			//construct the level
 			data.walls = [];
 			for (var i = 0; i < 11; i++) {
 				for (var j = 0; j < 20; j++) {
-					if (levels[currentLevel][i][j] == 0) {
+					if (levels[data.currentLevel][i][j] == 0) {
 						data.walls.push({x:j*b,y:(i+1)*b});
 					};
-					if (levels[currentLevel][i][j] == 1) {
+					if (levels[data.currentLevel][i][j] == 1) {
 						data.electron.x = j*b;
 						data.electron.y = (i+1)*b;
 					};
-					if (levels[currentLevel][i][j] == 2) {
+					if (levels[data.currentLevel][i][j] == 2) {
 						data.exit.x = j*b;
 						data.exit.y = (i+1)*b;
 					};
@@ -71,6 +69,8 @@
 
 		// Update game objects
 		function update(modifier) {
+			var levels = window.freeElectron.map.levels;
+
 			if (data.currentLevel === 0) {
 				for(var prop in keysDown) {
 				    if (keysDown.hasOwnProperty(prop)) {//any key
@@ -146,7 +146,7 @@
 					data.electron.y = data.canvas.height-data.b;
 
 				//adjust electron.health
-				if (activeWalls.length) {
+				if (data.activeWalls.length) {
 					for (var i = 0; i < data.activeWalls.length; i++) {
 						data.electron.health -= (data.activeWalls[i].strength * modifier*50);//50 is abitrary
 						if (data.electron.health < 0) {
@@ -192,7 +192,8 @@
 
 		// Draw everything
 		function render() {
-			var draw = window.freeElectron.draw;
+			var draw = window.freeElectron.draw,
+				levels = window.freeElectron.map.levels;
 			
 			if (fontsLoaded) {//TODO: I don't believe this works properly!
 				if (data.currentLevel === 0) { // start screen
@@ -202,7 +203,7 @@
 					for (var i = 0; i < data.walls.length; i++) {
 						draw.Wall(data.walls[i], data);
 					};
-					draw.Exit();
+					draw.Exit(data);
 				} else if (data.currentLevel === levels.length-1) { // end screen
 					data.electron.health = 100;
 					draw.Background(data);
@@ -212,16 +213,16 @@
 					draw.Background(data);
 					draw.Score(data);
 					draw.Health(data);
-					for (var i = 0; i < walls.length; i++) {
-						draw.Wall(walls[i], data);
+					for (var i = 0; i < data.walls.length; i++) {
+						draw.Wall(data.walls[i], data);
 					};
 					draw.Electron(data);
-					for (var i = 0; i < activeWalls.length; i++) {
-						draw.Active(activeWalls[i], data);
+					for (var i = 0; i < data.activeWalls.length; i++) {
+						draw.Active(data.activeWalls[i], data);
 					};
-					draw.Exit();
-					if (electron.health == 0){
-						draw.DeathScene();
+					draw.Exit(data);
+					if (data.electron.health == 0){
+						draw.DeathScene(data);
 					};
 				};
 			};
@@ -263,5 +264,5 @@
 			data: data
 		};
 
-	}();
+	})();
 })(window.freeElectron = window.freeElectron || {});
