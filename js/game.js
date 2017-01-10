@@ -181,6 +181,7 @@
 			} else { 
 				data.deathElapsedTime += modifier*1000;
 				if (data.deathElapsedTime > data.deathDuration) {
+					window.freeElectron.cookies.checkScoreAgainstHighScores(data.currentLevel, data.then);
 					data.currentLevel--;
 					data.deathStartTime = 0;
 					data.deathElapsedTime = 0;
